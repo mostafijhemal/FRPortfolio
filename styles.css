@@ -643,7 +643,7 @@ p { margin: 0 0 1.1em; }
 .timeline-item {
   position: relative;
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
+  grid-template-columns: 172px minmax(0, 1fr);
   gap: 28px;
   padding: 22px 0 26px;
 }

@@ -1,7 +1,24 @@
 # Mostafijur Rahman — Portfolio
 
-A single-page portfolio plus a small blog, built with plain HTML, CSS, and
-JavaScript. No build step, no dependencies — open `index.html` and it works.
+My personal portfolio and blog: a single-page site covering what I build, the tools I
+work with, and where I've studied and worked, plus a small blog for writing about
+software and AI.
+
+Built with plain HTML, CSS, and JavaScript. No build step, no dependencies — open
+`index.html` and it works.
+
+## Profile
+
+| Item | Details |
+| --- | --- |
+| Role | **Executive** at **AristoPharma Ltd.**, since **1 February 2023** |
+| Based in | Dhaka, Bangladesh |
+| M.Sc. | Computer Science & Engineering, **Jahangirnagar University**, **2026** |
+| M.Sc. thesis | Advanced Cookies Analyzer — web privacy and cookie analysis |
+| B.Sc. | Computer Science & Engineering, **Eastern University**, **2019** |
+
+These facts are written into `index.html` — the hero, the About paragraphs, the `#work`
+timeline and the M.Sc. project card. Update them there if anything changes.
 
 ## Files
 
@@ -14,7 +31,7 @@ JavaScript. No build step, no dependencies — open `index.html` and it works.
 | `blog-tool-calls.html` | Post: *Tool calls are the new API surface* |
 | `styles.css` | Design system, layout, responsive breakpoints, print styles |
 | `script.js` | Mobile nav, scroll reveal, active-section nav, copy-email, contact form, 3D card tilt |
-| `assets/avatar.png` | Portrait pulled from GitHub |
+| `assets/avatar.png` | Portrait |
 | `assets/favicon.svg` | Monogram favicon |
 
 ## Preview locally
@@ -42,13 +59,13 @@ teal used throughout). Change `--accent` / `--accent-strong` to re-theme the sit
 
 The form does client-side validation (name, email format, message length) and shows
 inline errors. It never posts anywhere by default: it opens the visitor's own email
-app with the message pre-filled and addressed to you, so it works on GitHub Pages
-with no accounts or backend.
+app with the message pre-filled and addressed to me, so it works on GitHub Pages with
+no accounts or backend.
 
 To collect submissions directly instead, paste a form endpoint in `script.js`:
 
 ```js
-const CONTACT_ENDPOINT = "https://formspree.io/f/xxxxxxxx"; // or another form service
+const CONTACT_ENDPOINT = "https://formspree.io/f/<your-form-id>"; // or another form service
 ```
 
 With an endpoint set, the form POSTs the fields as `multipart/form-data` and shows a
@@ -58,8 +75,7 @@ change. There is also an off-screen `_gotcha` honeypot field that silently drops
 ## Blog
 
 `blog.html` lists the posts; each post is its own HTML page so links are stable and
-nothing needs a database. The three posts that ship with the site are demo content —
-rewrite them, or delete them and start from one as a template.
+nothing needs a database.
 
 To add a post:
 
@@ -83,11 +99,3 @@ The post body lives inside `<div class="prose">`, so `h2`, `p`, `ul`, `blockquot
 
 To serve it at `https://mostafijhemal.github.io/` instead, name the repository
 `mostafijhemal.github.io` and drop it at the branch root.
-
-## Still to confirm
-
-- Exact job title and start date at **AristoPharma Ltd.**
-- Graduation year and university name for the **M.Sc.** entry (and whether to add a
-  B.Sc. entry)
-- Optional extras: phone number or CV/PDF download
-- Replace the three demo blog posts with real writing

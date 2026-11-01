@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tool calls are the new API surface — Mostafijur Rahman</title>
+  <meta name="description" content="A tool description is an API spec for a reader that follows instructions instead of code — and that changes what a good error message has to say." />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="Mostafijur Rahman — home">
+        <span class="brand-mark">MR</span>
+        <span class="brand-name">Mostafijur<span class="dot">.</span></span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a class="is-active" href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li class="nav-cta"><a class="btn btn-sm btn-primary" href="index.html#contact">Hire me</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <div class="container container--narrow">
+        <a class="post-back" href="blog.html">← All posts</a>
+
+        <p class="section-kicker">AI &amp; backend</p>
+        <h1>Tool calls are the new API surface</h1>
+        <p class="article-lede">
+          A tool description is an API spec written for a reader that follows
+          instructions instead of reading code. That one change rewrites what a
+          good error message has to say — and who you are really designing for.
+        </p>
+
+        <p class="post-meta">
+          <time datetime="2026-10-02">2 October 2026</time>
+          <span class="sep">·</span>
+          <span>6 min read</span>
+        </p>
+
+        <div class="prose">
+          <p>
+            I have written a lot of REST endpoints where the documentation was an
+            afterthought for a human who would read it once. Tool definitions
+            invert that: the description is not documentation, it is the
+            implementation of how the caller decides what to do. Get the wording
+            wrong and the code is wrong too.
+          </p>
+
+          <h2>A tool description is a spec</h2>
+          <p>
+            When an agent picks a tool, it is matching your prose against its goal.
+            “Fetch user” and “Fetch user by email, read-only” are the same function
+            with very different failure modes. The second one tells the caller when
+            <em>not</em> to use it, which is the part people leave out.
+          </p>
+          <p>
+            So the description earns the same care as a function signature:
+          </p>
+          <ul>
+            <li><strong>What it does</strong>, in one sentence with no hedging.</li>
+            <li><strong>When to use it</strong>, including the case it looks right for but is not.</li>
+            <li><strong>What it costs</strong> — a read is free to retry, a write is not.</li>
+            <li><strong>What comes back</strong>, in the shape the caller will see, not the shape your ORM produced.</li>
+          </ul>
+
+          <h2>Write errors for a reader, not a logger</h2>
+          <p>
+            A human reading a stack trace has context. An agent does not. It has
+            your message and nothing else, so an error is a prompt, whether you
+            meant it to be or not.
+          </p>
+          <pre><code>{\n  "ok": false,\n  "code": "invalid_date",\n  "message": "\"2026-13-02\" is not a valid date. Use YYYY-MM-DD.",\n  "retryable": true\n}</code></pre>
+          <p>
+            Compare that to <code>400 Bad Request</code>. One of them lets the run
+            fix itself on the next step; the other wastes a model call guessing.
+            The <code>retryable</code> flag matters just as much — nothing annoys
+            people faster than an agent retrying a permission error four times.
+          </p>
+
+          <h2>Keep the surface small</h2>
+          <p>
+            Every tool you expose is another decision the model has to make, and
+            more choices means more wrong ones. I would rather have six sharp tools
+            than twenty overlapping ones — <code>list_orders</code>,
+            <code>get_order</code>, and <code>update_order_status</code> are easier to
+            reason about than one <code>orders</code> endpoint with a mode string.
+          </p>
+          <blockquote>
+            <p>
+              If two tools could plausibly be chosen for the same request, that is a
+              bug in the design, not a bug in the model.
+            </p>
+          </blockquote>
+
+          <h2>What MCP-style protocols get right</h2>
+          <p>
+            Standardising how tools are described — names, JSON schemas, result
+            shapes — means the same definition works across clients instead of being
+            rewritten per assistant. The value is not the transport; it is that
+            tool design becomes a reviewable artefact, like an OpenAPI file. You can
+            diff it, test it, and notice when someone quietly widens a schema.
+          </p>
+          <p>
+            That is the part worth copying even if you never adopt a protocol:
+            describe your tools in a file, keep it under version control, and treat
+            a change to a description as a change to the API.
+          </p>
+
+          <h2>The work is still the work</h2>
+          <p>
+            None of this removes the need for the things APIs always needed —
+            authentication, scoping, idempotency, rate limits. It just adds a new
+            audience for the documentation. The tools that hold up are the ones where
+            the description, the schema, and the error text were designed together,
+            by someone who expected to be woken up when they went wrong.
+          </p>
+        </div>
+
+        <ul class="tags tags--sm article-tags">
+          <li>MCP</li><li>schemas</li><li>DX</li>
+        </ul>
+
+        <div class="article-footer">
+          <img src="assets/avatar.png" alt="" width="44" height="44" />
+          <p>
+            <strong>Mostafijur Rahman</strong>
+            Software engineer in Dhaka, building backend services and data-heavy
+            tools. Mostly Python, Laravel, and a lot of SQL.
+          </p>
+        </div>
+      </div>
+
+      <nav class="post-nav container container--narrow" aria-label="More posts">
+        <a href="blog-small-models.html">
+          <span>Previous post</span>
+          <strong>Small models changed where AI features live</strong>
+        </a>
+        <a class="next" href="blog.html">
+          <span>Index</span>
+          <strong>All posts →</strong>
+        </a>
+      </nav>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year">2026</span> Mostafijur Rahman. Built with care in Dhaka.</p>
+      <a class="back-top" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

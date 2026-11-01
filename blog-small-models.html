@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Small models changed where AI features live — Mostafijur Rahman</title>
+  <meta name="description" content="When a useful model runs inside the app instead of behind an API, latency, cost, and privacy trade-offs all change shape." />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="Mostafijur Rahman — home">
+        <span class="brand-mark">MR</span>
+        <span class="brand-name">Mostafijur<span class="dot">.</span></span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a class="is-active" href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li class="nav-cta"><a class="btn btn-sm btn-primary" href="index.html#contact">Hire me</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <div class="container container--narrow">
+        <a class="post-back" href="blog.html">← All posts</a>
+
+        <p class="section-kicker">AI &amp; product</p>
+        <h1>Small models changed where AI features live</h1>
+        <p class="article-lede">
+          For a few years, “add an AI feature” meant “add an API client”. That
+          assumption is quietly breaking: a model small enough to run inside the
+          app turns a network call into a local function, and the trade-offs move
+          with it.
+        </p>
+
+        <p class="post-meta">
+          <time datetime="2026-10-14">14 October 2026</time>
+          <span class="sep">·</span>
+          <span>5 min read</span>
+        </p>
+
+        <div class="prose">
+          <p>
+            The interesting shift is not that small models got good in isolation.
+            It is that the <em>cost of a query</em> stopped being dominated by the
+            network and the invoice, and started being dominated by memory and
+            battery — constraints you can reason about locally, on a machine you
+            control.
+          </p>
+
+          <h2>Three things change at once</h2>
+          <p>
+            When the model runs next to your UI instead of across the internet,
+            three properties flip at the same time.
+          </p>
+          <ul>
+            <li>
+              <strong>Latency stops being a round trip.</strong> A local call that
+              takes 300ms feels instant, while a 300ms API call is a spinner
+              someone notices.
+            </li>
+            <li>
+              <strong>Cost becomes a download.</strong> You ship the weights once
+              instead of paying per word forever — which changes which features are
+              even worth building.
+            </li>
+            <li>
+              <strong>Privacy becomes the default.</strong> Text typed into the app
+              never leaves the device, so the feature can be offered without a
+              consent dialog that nobody reads.
+            </li>
+          </ul>
+
+          <h2>The feature stops being a feature</h2>
+          <p>
+            This is the part I find most interesting. When the model is on-device,
+            it behaves like any other part of the app: it can sit in a loop, run on
+            every keystroke, or power something as small as a smarter sort order.
+            You stop designing around a quota and start designing around what would
+            actually help.
+          </p>
+          <blockquote>
+            <p>
+              An offline suggestion that always answers beats a brilliant one that
+              needs a request ID, a timeout state, and a retry button.
+            </p>
+          </blockquote>
+
+          <h2>The trade-offs are real</h2>
+          <p>
+            I would not pretend this is free. A small model has a lower ceiling:
+            it will fail the long, multi-step reasoning task that a hosted model
+            handles without drama. It also has a fixed memory footprint, a slower
+            update cycle — every improvement means shipping an app build — and it
+            competes with the rest of your process for CPU.
+          </p>
+          <p>
+            In practice that means building in a fallback from the first day: a
+            clear answer for “this needs more than I can do here”, rather than a
+            confident wrong one.
+          </p>
+
+          <h2>When I still reach for a hosted model</h2>
+          <p>
+            Anything that needs a large context window, a chain of tools, or a
+            judgement call with real consequences still belongs behind an API where
+            I can log it, rate-limit it, and swap the model without an app release.
+            The useful pattern is a split: small local model for the fast, private,
+            always-available layer; hosted model for the rare, heavy request that a
+            user explicitly makes.
+          </p>
+          <p>
+            That split is not a technicality. It changes where the feature lives in
+            the product — and increasingly, the version that lives in the app is the
+            one people actually use.
+          </p>
+        </div>
+
+        <ul class="tags tags--sm article-tags">
+          <li>on-device</li><li>latency</li><li>privacy</li>
+        </ul>
+
+        <div class="article-footer">
+          <img src="assets/avatar.png" alt="" width="44" height="44" />
+          <p>
+            <strong>Mostafijur Rahman</strong>
+            Software engineer in Dhaka, building backend services and data-heavy
+            tools. Mostly Python, Laravel, and a lot of SQL.
+          </p>
+        </div>
+      </div>
+
+      <nav class="post-nav container container--narrow" aria-label="More posts">
+        <a href="blog-agents-boring-parts.html">
+          <span>Previous post</span>
+          <strong>The boring parts of AI agents are the parts that matter</strong>
+        </a>
+        <a class="next" href="blog-tool-calls.html">
+          <span>Next post</span>
+          <strong>Tool calls are the new API surface</strong>
+        </a>
+      </nav>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year">2026</span> Mostafijur Rahman. Built with care in Dhaka.</p>
+      <a class="back-top" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

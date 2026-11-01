@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing — Mostafijur Rahman</title>
+  <meta name="description" content="Notes on backend engineering, data, and building software with AI tools — by Mostafijur Rahman." />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="Mostafijur Rahman — home">
+        <span class="brand-mark">MR</span>
+        <span class="brand-name">Mostafijur<span class="dot">.</span></span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a class="is-active" href="blog.html" aria-current="page">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li class="nav-cta"><a class="btn btn-sm btn-primary" href="index.html#contact">Hire me</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="blog-head">
+      <div class="container">
+        <p class="section-kicker">Writing</p>
+        <h1>Notes from building software.</h1>
+        <p class="blog-lede">
+          What I learn while shipping backend services, data-heavy tools, and
+          the occasional AI feature — written down so the next attempt goes faster.
+        </p>
+      </div>
+    </section>
+
+    <section class="section blog-list">
+      <div class="container">
+        <article class="post-featured reveal tilt">
+          <p class="post-meta">
+            <span class="post-cat">AI &amp; agents</span>
+            <time datetime="2026-10-28">28 October 2026</time>
+            <span class="sep">·</span>
+            <span>7 min read</span>
+          </p>
+          <h2><a href="blog-agents-boring-parts.html">The boring parts of AI agents are the parts that matter</a></h2>
+          <p class="post-excerpt">
+            Everyone demos the impressive half — the model writing code, calling a
+            tool, chaining two steps together. The half that decides whether it
+            survives contact with real work is permissions, logs, retries, and a
+            human who actually reads the diff.
+          </p>
+          <ul class="tags tags--sm">
+            <li>agents</li><li>tooling</li><li>engineering</li>
+          </ul>
+          <a class="post-more" href="blog-agents-boring-parts.html">Read the post →</a>
+        </article>
+
+        <div class="post-grid">
+          <article class="post-card reveal tilt">
+            <p class="post-meta">
+              <span class="post-cat">AI &amp; product</span>
+              <time datetime="2026-10-14">14 October 2026</time>
+            </p>
+            <h3><a href="blog-small-models.html">Small models changed where AI features live</a></h3>
+            <p class="post-excerpt">
+              When a useful model fits on the device you already have, the feature
+              stops being an API call and becomes a normal part of the app — with a
+              different set of trade-offs.
+            </p>
+            <ul class="tags tags--sm">
+              <li>on-device</li><li>latency</li><li>privacy</li>
+            </ul>
+            <a class="post-more" href="blog-small-models.html">Read the post →</a>
+          </article>
+
+          <article class="post-card reveal tilt">
+            <p class="post-meta">
+              <span class="post-cat">AI &amp; backend</span>
+              <time datetime="2026-10-02">2 October 2026</time>
+            </p>
+            <h3><a href="blog-tool-calls.html">Tool calls are the new API surface</a></h3>
+            <p class="post-excerpt">
+              A tool description is an API spec for something that reads
+              instructions instead of reading code — and that changes what a good
+              error message has to say.
+            </p>
+            <ul class="tags tags--sm">
+              <li>MCP</li><li>schemas</li><li>DX</li>
+            </ul>
+            <a class="post-more" href="blog-tool-calls.html">Read the post →</a>
+          </article>
+        </div>
+
+        <p class="blog-note">
+          These three posts are sample content so the layout has something real in it —
+          replace them with your own writing. New posts land here first, and I mention
+          them on <a href="https://t.me/mostafijhemal" target="_blank" rel="noopener noreferrer">Telegram</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year">2026</span> Mostafijur Rahman. Built with care in Dhaka.</p>
+      <a class="back-top" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

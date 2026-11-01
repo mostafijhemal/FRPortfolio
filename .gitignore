@@ -1,0 +1,8 @@
+# Local scratch data (GitHub API snapshots, server logs)
+.gh/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+/freebuff-sites-build/

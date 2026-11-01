@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The boring parts of AI agents are the parts that matter — Mostafijur Rahman</title>
+  <meta name="description" content="The impressive half of an AI agent is the demo. The half that decides whether it survives real work is permissions, logging, retries, and review." />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="index.html" aria-label="Mostafijur Rahman — home">
+        <span class="brand-mark">MR</span>
+        <span class="brand-name">Mostafijur<span class="dot">.</span></span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#work">Work</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a class="is-active" href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li class="nav-cta"><a class="btn btn-sm btn-primary" href="index.html#contact">Hire me</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="article">
+      <div class="container container--narrow">
+        <a class="post-back" href="blog.html">← All posts</a>
+
+        <p class="section-kicker">AI &amp; agents</p>
+        <h1>The boring parts of AI agents are the parts that matter</h1>
+        <p class="article-lede">
+          The demo is the easy part. What decides whether an agent is still useful
+          six weeks later is everything around the model: what it is allowed to
+          touch, what happens when a step fails, and whether a human ever reads
+          what it produced.
+        </p>
+
+        <p class="post-meta">
+          <time datetime="2026-10-28">28 October 2026</time>
+          <span class="sep">·</span>
+          <span>7 min read</span>
+        </p>
+
+        <div class="prose">
+          <p>
+            I have now watched a handful of agent demos turn into actual internal
+            tools, and the pattern is consistent. The part that gets shared in
+            chat — the model reading a ticket and opening a pull request — takes
+            an afternoon. The part that makes it trustworthy takes the rest of
+            the month, and almost none of it involves prompting.
+          </p>
+
+          <h2>An agent is a loop with a budget</h2>
+          <p>
+            Strip away the branding and an agent is a <code>while</code> loop:
+            ask the model what to do, run the tool it picked, append the result,
+            repeat. The engineering question is not “how do I make it smarter”
+            but “how does this loop end”.
+          </p>
+          <p>
+            Every loop needs three limits, and they belong in code, not in the
+            prompt:
+          </p>
+          <ul>
+            <li><strong>Steps.</strong> A maximum number of tool calls before it stops and reports what it has.</li>
+            <li><strong>Spend.</strong> A token or time ceiling, so one confused run cannot quietly cost a day of budget.</li>
+            <li><strong>Blast radius.</strong> What the run is allowed to change, decided before it starts, not negotiated by the model mid-run.</li>
+          </ul>
+          <p>
+            None of that is exciting. All of it is the difference between a
+            tool people leave running and a tool people babysit.
+          </p>
+
+          <h2>Permissions are the product</h2>
+          <p>
+            A tool you hand to a model is a hole in your system with a natural
+            language front door. So the default has to be boring: read first,
+            write later, and write only behind an explicit approval step.
+          </p>
+          <blockquote>
+            <p>
+              If you would not give the credential to a new intern on their first
+              morning, do not give it to an agent on its first run.
+            </p>
+          </blockquote>
+          <p>
+            In practice that means scoped database users, separate API tokens per
+            tool, and no shared “admin” key because it was easier to wire up. It
+            also means the boring audit trail: which run, which tool, which
+            arguments, which result. When something goes wrong, that log is the
+            only thing that tells you whether the model was wrong or the tool was.
+          </p>
+
+          <h2>Errors are the interface</h2>
+          <p>
+            Half the perceived quality of an agent is how well it recovers from a
+            failed tool call. A vague <code>500 Internal Server Error</code> sends
+            it guessing; a message that names the bad field sends it fixing.
+          </p>
+          <p>
+            Treat tool errors as copy you are writing for a very literal reader.
+            Say what failed, which input caused it, and what a valid input looks
+            like. The same error string is now a product decision, not just a log
+            line.
+          </p>
+
+          <h2>The diff still needs a reader</h2>
+          <p>
+            Generated code is a draft from a fast, confident colleague who has
+            never been in the codebase. That is genuinely useful and genuinely
+            incomplete. The workflow that has held up for me is small diffs, a
+            test that fails before the change and passes after, and a human who
+            reads every line before merge — not because the model is untrustworthy,
+            but because a reviewer who skims is how subtle bugs get in regardless
+            of who wrote the code.
+          </p>
+
+          <h2>What this changed in how I build</h2>
+          <p>
+            I spend far less time on prompts and far more on the scaffolding
+            around them: smaller, sharper tools; structured results; a dry-run
+            mode for anything that writes; and a summary at the end that says what
+            changed instead of what the model was thinking.
+          </p>
+          <p>
+            The impressive part of an agent is the demo. The useful part is the
+            plumbing — and the plumbing is where I would spend my next month too.
+          </p>
+        </div>
+
+        <ul class="tags tags--sm article-tags">
+          <li>agents</li><li>tooling</li><li>engineering</li>
+        </ul>
+
+        <div class="article-footer">
+          <img src="assets/avatar.png" alt="" width="44" height="44" />
+          <p>
+            <strong>Mostafijur Rahman</strong>
+            Software engineer in Dhaka, building backend services and data-heavy
+            tools. Mostly Python, Laravel, and a lot of SQL.
+          </p>
+        </div>
+      </div>
+
+      <nav class="post-nav container container--narrow" aria-label="More posts">
+        <a href="blog-small-models.html">
+          <span>Next post</span>
+          <strong>Small models changed where AI features live</strong>
+        </a>
+        <a class="next" href="blog.html">
+          <span>Index</span>
+          <strong>All posts →</strong>
+        </a>
+      </nav>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year">2026</span> Mostafijur Rahman. Built with care in Dhaka.</p>
+      <a class="back-top" href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
